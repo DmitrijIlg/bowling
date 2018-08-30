@@ -13,9 +13,9 @@ class Frame
     @score = nil
   end
 
-  def knock_down
+  def knock_down(pins = nil)
     return "Can't accept throw!" unless accept_throw?
-    pins = rand(0..@pins_left)
+    pins = rand(0..@pins_left) unless pins
     @pins_left -= pins
     if    @points.count.zero? && @pins_left.zero? then set_strike(pins)
     elsif @points.count == 1 && @pins_left.zero?  then set_spare(pins)
