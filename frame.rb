@@ -2,7 +2,7 @@ class Frame
   STATUSES = %w[open strike spare closed].freeze
   NUMBERS = (1..10).to_a.freeze
 
-  attr_reader :score
+  attr_reader :number, :points, :score
 
   def initialize(number)
     raise 'Min 1 and Max 10' unless NUMBERS.include?(number)
@@ -31,13 +31,17 @@ class Frame
   end
 
   def stats
+    puts
+    puts
     puts '*' * 10
-    p @number
-    p @pins_left
-    p @status
-    p @points
-    p @score
+    puts "Current frame Nr #{@number}"
+    puts "Pins left #{@pins_left}"
+    puts "Frame status #{@status}"
+    puts "Your points in this frame #{@points}"
+    puts "This frame score #{@score}"
     puts '*' * 10
+    puts
+    puts
   end
 
   def accept_throw?

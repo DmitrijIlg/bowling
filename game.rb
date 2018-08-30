@@ -16,19 +16,32 @@ class Game
   end
 
   def score
-    puts @frames.map(&:score).inject(:+)
+    @frames.map(&:score).inject(:+)
+  end
+
+  def current_frame_stats
+    @current_frame.stats
   end
 
   def stats
+    puts
+    puts
+    puts '*' * 10
+    puts 'Game stats'
     puts '*' * 10
     @frames.each do |f|
-      p f
+      puts "Frame number #{f.number}"
+      puts "Frame points #{f.points}"
+      puts "Frame score #{f.score}"
+      puts '-' * 10
     end
     puts
-    p @frames.count
     puts
-    p @current_frame
-    puts '*' * 10
+    puts "Total game score #{score}"
+  end
+
+  def game_over?
+    @frames.count >= 10
   end
 
   private
