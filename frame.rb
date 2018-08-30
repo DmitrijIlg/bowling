@@ -2,7 +2,7 @@ class Frame
   STATUSES = %w[open strike spare closed].freeze
   NUMBERS = (1..10).to_a.freeze
 
-  attr_reader :number
+  attr_reader :score
 
   def initialize(number)
     raise 'Min 1 and Max 10' unless NUMBERS.include?(number)
@@ -47,6 +47,7 @@ class Frame
 
   def add_points(points)
     @points << points if accept_points?
+    @score = @points.inject(:+)
   end
 
   private
