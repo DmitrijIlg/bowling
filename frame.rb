@@ -5,6 +5,7 @@ class Frame
   attr_reader :number
 
   def initialize(number)
+    raise 'Min 1 and Max 10' unless NUMBERS.include?(number)
     @number = number
     @pins_left = 10
     @status = 'open'
@@ -15,11 +16,10 @@ class Frame
   def knock_down
     return "Can't accept throw!" unless accept_throw?
     pins = rand(0..@pins_left)
-    # pins = 5
     @pins_left -= pins
     if    @points.count.zero? && @pins_left.zero? then set_strike(pins)
     elsif @points.count == 1 && @pins_left.zero?  then set_spare(pins)
-    elsif @points.count == 2 && !@pins_left.zero? then set_close(pins)
+    elsif @points.count == 1 && !@pins_left.zero? then set_close(pins)
     else  set_points(pins)
     end
     @score = @points.inject(:+)
@@ -41,8 +41,12 @@ class Frame
   end
 
   def accept_throw?
-    !%w[strike spare close].include?(@status) ||
+    !%w[strike spare closed].include?(@status) ||
       tenth?
+  end
+
+  def add_points(points)
+    @points << points if accept_points?
   end
 
   private
@@ -61,14 +65,14 @@ class Frame
   end
 
   def set_spare(pins)
-    @status = 'spare' unless @number == 10 && @points.count == 1
+    @status = 'spare' unless @number == 10 && @status == 'strike'
     @points << pins
     add_pins if tenth?
     nil
   end
 
   def set_close(pins)
-    @status = 'closed' unless @number == 10 && @points.count == 2
+    @status = 'closed' unless @number == 10 && %w[strike spare].include?(@status)
     @points << pins
     nil
   end
